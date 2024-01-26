@@ -1,13 +1,12 @@
 import "./Person.scss";
-import LogoImg from "./logo.png";
 
-function Person(props) {
+function Person({ name, age, children }) {
   return (
     <div className="person">
-      <img src={LogoImg} alt="" />
-      <h1 className="title">{props.name}</h1>
+      <h1 className="title">{name}</h1>
+      <p className="prof">{children}</p>
       <p className="age">
-        Age: <span>{props.age}</span>
+        Age: <span>{age}</span>
       </p>
     </div>
   );
