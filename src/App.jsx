@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import Person from "./components/Person/Person";
+import { Component } from "react";
 
 function App() {
   const [title, setTitle] = useState("Hello React"); // [data, fn]
@@ -9,9 +10,9 @@ function App() {
     { name: "John", age: 20, prof: "Junior Web Developer" },
   ]);
 
-  const changeTitle = () => {
+  const changeTitle = (text) => {
     if (title === "Hello React") {
-      setTitle("New title");
+      setTitle(text);
     } else {
       setTitle("Hello React");
     }
@@ -41,7 +42,7 @@ function App() {
     <div className="wrapper">
       <h1 className="title">{title}</h1>
       <div className="controls">
-        <button className="btn" onClick={changeTitle}>
+        <button className="btn" onClick={() => changeTitle("New title")}>
           Change title
         </button>
 
@@ -64,5 +65,25 @@ function App() {
     </div>
   );
 }
+
+// class App extends Component {
+//   state = {
+//     title: "Some title",
+//   };
+
+//   changeName = () => {
+//     this.setState({ ...this.state, title: "New title" });
+//   };
+
+//   render() {
+//     return (
+//       <div className="wrapper">
+//         <h1 className="title" onClick={this.changeName}>
+//           {this.state.title}
+//         </h1>
+//       </div>
+//     );
+//   }
+// }
 
 export default App;
