@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./App.css";
 import Person from "./components/Person/Person";
 import { Component } from "react";
+import Button from "./components/Button/Button";
 
 function App() {
   const [title, setTitle] = useState("Hello React"); // [data, fn]
@@ -42,9 +43,10 @@ function App() {
     <div className="wrapper">
       <h1 className="title">{title}</h1>
       <div className="controls">
-        <button className="btn" onClick={() => changeTitle("New title")}>
+        {/* <button className="btn" onClick={() => changeTitle("New title")}>
           Change title
-        </button>
+        </button> */}
+        <Button click={() => changeTitle("New title")}>Change title</Button>
 
         <button className="btn" onClick={changeName}>
           Change Name
