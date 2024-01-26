@@ -1,0 +1,17 @@
+.person {
+  background: var(--accent-color);
+  color: #fff;
+
+  border: 1px tomato solid;
+  padding: 20px;
+  border-radius: 30px;
+  text-align: center;
+}
+
+.age {
+  font-size: 1.2em;
+  span {
+    font-weight: bold;
+    font-size: 1.5em;
+  }
+}
