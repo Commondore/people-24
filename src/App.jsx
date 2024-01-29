@@ -1,12 +1,23 @@
 import { useState } from "react";
 import "./App.css";
 import Person from "./components/Person/Person";
+import CreatePerson from "./components/CreatePerson/CreatePerson";
 
 function App() {
   const [title, setTitle] = useState("Hello React"); // [data, fn]
   const [people, setPeople] = useState([
-    { name: "Mike", age: 30, prof: "Motion Designer", id: 1 },
-    { name: "John", age: 20, prof: "Junior Web Developer", id: 2 },
+    {
+      name: "Mike",
+      age: 30,
+      prof: "Motion Designer",
+      id: 1,
+    },
+    {
+      name: "John",
+      age: 20,
+      prof: "Junior Web Developer",
+      id: 2,
+    },
   ]);
   const [isShow, setIsShow] = useState(true);
 
@@ -19,7 +30,10 @@ function App() {
       return people.map((person) => {
         return {
           ...person,
-          name: person.id === id ? event.target.value : person.name,
+          name:
+            person.id === id
+              ? event.target.value
+              : person.name,
         };
       });
     });
@@ -27,7 +41,9 @@ function App() {
 
   const increaseAge = (id) => {
     const copyPeople = [...people];
-    const index = people.findIndex((person) => person.id === id);
+    const index = people.findIndex(
+      (person) => person.id === id
+    );
     const person = { ...people[index] };
     person.age = person.age + 1;
     copyPeople[index] = person;
@@ -49,6 +65,12 @@ function App() {
     });
   };
 
+  const createPerson = (person) => {
+    setPeople((people) => {
+      return [...people, person];
+    });
+  };
+
   let list = null;
 
   if (isShow) {
@@ -61,7 +83,9 @@ function App() {
               name={person.name}
               age={person.age}
               icrease={() => increaseAge(person.id)}
-              change={(event) => changeName(person.id, event)}
+              change={(event) =>
+                changeName(person.id, event)
+              }
               remove={() => removePerson(person.id)}
             >
               Профессия: <span>{person.prof}</span>
@@ -83,11 +107,16 @@ function App() {
   return (
     <div className="wrapper">
       <h1 className="title">{title}</h1>
-      <input type="text" value={title} onChange={changeTitle} />
+      {/* <input type="text" value={title} onChange={changeTitle} /> */}
+
+      <CreatePerson create={createPerson} />
 
       <div className="controls">
         {!!people.length && (
-          <button className="btn" onClick={() => setIsShow((isShow) => !isShow)}>
+          <button
+            className="btn"
+            onClick={() => setIsShow((isShow) => !isShow)}
+          >
             Toggle People
           </button>
         )}
