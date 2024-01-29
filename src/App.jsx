@@ -1,69 +1,98 @@
 import { useState } from "react";
 import "./App.css";
 import Person from "./components/Person/Person";
-import { Component } from "react";
-import Button from "./components/Button/Button";
 
 function App() {
   const [title, setTitle] = useState("Hello React"); // [data, fn]
   const [people, setPeople] = useState([
-    { name: "Mike", age: 30, prof: "Motion Designer" },
-    { name: "John", age: 20, prof: "Junior Web Developer" },
+    { name: "Mike", age: 30, prof: "Motion Designer", id: 1 },
+    { name: "John", age: 20, prof: "Junior Web Developer", id: 2 },
   ]);
+  const [isShow, setIsShow] = useState(true);
 
-  const changeTitle = (text) => {
-    if (title === "Hello React") {
-      setTitle(text);
-    } else {
-      setTitle("Hello React");
-    }
+  const changeTitle = (event) => {
+    setTitle(event.target.value);
   };
 
-  const changeName = () => {
-    const copyPeople = [...people];
-    const person = { ...copyPeople[0] };
-    person.name = "Sam";
-    copyPeople[0] = person;
-
-    setPeople(copyPeople);
-  };
-
-  const increaseAge = () => {
-    setPeople((prevPeople) => {
-      return prevPeople.map((person) => {
+  const changeName = (id, event) => {
+    setPeople((people) => {
+      return people.map((person) => {
         return {
           ...person,
-          age: person.age + 1,
+          name: person.id === id ? event.target.value : person.name,
         };
       });
     });
   };
 
+  const increaseAge = (id) => {
+    const copyPeople = [...people];
+    const index = people.findIndex((person) => person.id === id);
+    const person = { ...people[index] };
+    person.age = person.age + 1;
+    copyPeople[index] = person;
+    setPeople(copyPeople);
+    // setPeople((prevPeople) => {
+    //   return prevPeople.map((person) => {
+    //     const age = person.id === id ? person.age + 1 : person.age;
+    //     return {
+    //       ...person,
+    //       age,
+    //     };
+    //   });
+    // });
+  };
+
+  const removePerson = (id) => {
+    setPeople((people) => {
+      return people.filter((person) => person.id !== id);
+    });
+  };
+
+  let list = null;
+
+  if (isShow) {
+    list = (
+      <div className="list">
+        {people.map((person) => {
+          return (
+            <Person
+              key={person.id}
+              name={person.name}
+              age={person.age}
+              icrease={() => increaseAge(person.id)}
+              change={(event) => changeName(person.id, event)}
+              remove={() => removePerson(person.id)}
+            >
+              Профессия: <span>{person.prof}</span>
+            </Person>
+          );
+        })}
+        {/* <Person
+          name={people[0].name}
+          age={people[0].age}
+          icrease={() => increaseAge(people[0].id)}
+          change={(event) => changeName(people[0].id, event)}
+        >
+          Профессия: <span>{people[0].prof}</span>
+        </Person> */}
+      </div>
+    );
+  }
+
   return (
     <div className="wrapper">
       <h1 className="title">{title}</h1>
+      <input type="text" value={title} onChange={changeTitle} />
+
       <div className="controls">
-        {/* <button className="btn" onClick={() => changeTitle("New title")}>
-          Change title
-        </button> */}
-        <Button click={() => changeTitle("New title")}>Change title</Button>
-
-        <button className="btn" onClick={changeName}>
-          Change Name
-        </button>
-
-        <button className="btn" onClick={increaseAge}>
-          Increase Age
-        </button>
+        {!!people.length && (
+          <button className="btn" onClick={() => setIsShow((isShow) => !isShow)}>
+            Toggle People
+          </button>
+        )}
       </div>
-      <div className="list">
-        <Person name={people[0].name} age={people[0].age}>
-          Профессия: <span>{people[0].prof}</span>
-        </Person>
-        <Person name={people[1].name} age={people[1].age}>
-          Профессия: <span>{people[1].prof}</span>
-        </Person>
-      </div>
+      {list}
     </div>
   );
 }
