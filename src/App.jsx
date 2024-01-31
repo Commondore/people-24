@@ -1,7 +1,9 @@
 import { useState } from "react";
 import "./App.css";
-import Person from "./components/Person/Person";
-import CreatePerson from "./components/CreatePerson/CreatePerson";
+import People from "./components/People/People";
+import ToggleButton from "./components/ToggleButton/ToggleButton";
+import Counter from "./components/Counter/Counter";
+import Example from "./components/Example/Example";
 
 function App() {
   const [title, setTitle] = useState("Hello React"); // [data, fn]
@@ -17,6 +19,12 @@ function App() {
       age: 20,
       prof: "Junior Web Developer",
       id: 2,
+    },
+    {
+      name: "Sam",
+      age: 22,
+      prof: "Middle Web Developer",
+      id: 3,
     },
   ]);
   const [isShow, setIsShow] = useState(true);
@@ -71,57 +79,33 @@ function App() {
     });
   };
 
-  let list = null;
-
-  if (isShow) {
-    list = (
-      <div className="list">
-        {people.map((person) => {
-          return (
-            <Person
-              key={person.id}
-              name={person.name}
-              age={person.age}
-              icrease={() => increaseAge(person.id)}
-              change={(event) =>
-                changeName(person.id, event)
-              }
-              remove={() => removePerson(person.id)}
-            >
-              Профессия: <span>{person.prof}</span>
-            </Person>
-          );
-        })}
-        {/* <Person
-          name={people[0].name}
-          age={people[0].age}
-          icrease={() => increaseAge(people[0].id)}
-          change={(event) => changeName(people[0].id, event)}
-        >
-          Профессия: <span>{people[0].prof}</span>
-        </Person> */}
-      </div>
-    );
-  }
-
   return (
     <div className="wrapper">
+      <Example />
       <h1 className="title">{title}</h1>
       {/* <input type="text" value={title} onChange={changeTitle} /> */}
 
-      <CreatePerson create={createPerson} />
-
       <div className="controls">
         {!!people.length && (
-          <button
-            className="btn"
-            onClick={() => setIsShow((isShow) => !isShow)}
+          <ToggleButton
+            isShow={isShow}
+            toggle={() => setIsShow((isShow) => !isShow)}
           >
-            Toggle People
-          </button>
+            Toggle Button
+          </ToggleButton>
         )}
       </div>
-      {list}
+
+      <Counter items={people}>Количество людей:</Counter>
+
+      {isShow && (
+        <People
+          people={people}
+          increase={increaseAge}
+          change={changeName}
+          remove={removePerson}
+        />
+      )}
     </div>
   );
 }
